@@ -5,6 +5,9 @@ library(doParallel)
 library(tictoc)
 library(furrr)
 
+tic.clearlog()
+tic("MTweedieTests parallel computing")
+
 simTweedieTest <-  
   function(N){ 
     t.test( 
@@ -18,7 +21,6 @@ simTweedieTest <-
 Cores <- min(detectCores(), maxcores)
 plan(multisession, workers = Cores)
 
-tic("")
 
 MTweedieTests <- 
   function(N, M, sig) {
@@ -26,7 +28,6 @@ MTweedieTests <-
     sum(results < sig) / M
   }
 
-toc(log = T)
 
 
 # Assignment 3:  
@@ -141,3 +142,5 @@ df %>%
   geom_line() +
   geom_hline(yintercept = .05) +
   theme_bw() 
+
+toc(log = T)

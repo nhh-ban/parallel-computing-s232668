@@ -4,6 +4,9 @@ library(ggplot2)
 library(doParallel)
 library(tictoc)
 
+tic.clearlog()
+tic("Parallel loop line 29-35")
+
 simTweedieTest <-  
   function(N){ 
     t.test( 
@@ -27,7 +30,6 @@ Cores <- min(detectCores(), maxcores)
 cl <- makeCluster(Cores)
 registerDoParallel(cl)
 
-tic("Parallel loop line 29-35")
 df <-  
   expand.grid( 
     N = c(10,100,1000,5000, 10000), 
@@ -44,7 +46,7 @@ df$share_reject <- foreach(i = 1:nrow(df), .packages = c("tweedie")) %dopar% {
 
 stopCluster(cl)
 
-toc(log = T)
+
 
 
 
@@ -142,3 +144,5 @@ df %>%
   geom_line() +
   geom_hline(yintercept = .05) +
   theme_bw() 
+
+toc(log = T)
